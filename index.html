@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego de memoria gatos tristes</title>
+
+  <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+  //card options
+  const cardArray = [
+    {
+      name: 'duren',
+      img: 'images/duren.jpg'
+    },
+    {
+      name: 'ia_stoy_arto',
+      img: 'images/ia_stoy_arto.jpg'
+    },
+    {
+      name: 'mimir',
+      img: 'images/mimir.jpg'
+    },
+    {
+      name: 'mishimishi',
+      img: 'images/mishimishi.jpg'
+    },
+    {
+      name: 'moquitos',
+      img: 'images/moquitos.jpg'
+    },
+    {
+      name: 'ahhh',
+      img: 'images/ahhh.jpg'
+    },
+    {
+      name: 'duren',
+      img: 'images/duren.jpg'
+    },
+    {
+      name: 'ia_stoy_arto',
+      img: 'images/ia_stoy_arto.jpg'
+    },
+    {
+      name: 'mimir',
+      img: 'images/mimir.jpg'
+    },
+    {
+      name: 'mishimishi',
+      img: 'images/mishimishi.jpg'
+    },
+    {
+      name: 'moquitos',
+      img: 'images/moquitos.jpg'
+    },
+    {
+      name: 'ahhh',
+      img: 'images/ahhh.jpg'
+    }
+    
+  ]
+
+  cardArray.sort(() => 0.5 - Math.random())
+
+  const grid = document.querySelector('.grid')
+  const resultDisplay = document.querySelector('#result')
+  let cardsChosen = []
+  let cardsChosenId = []
+  let cardsWon = []
+
+  //create your board
+  function createBoard() {
+    for (let i = 0; i < cardArray.length; i++) {
+      const card = document.createElement('img')
+      card.setAttribute('src', 'images/escoger.jpg')
+      card.setAttribute('data-id', i)
+      card.addEventListener('click', flipCard)
+      grid.appendChild(card)
+    }
+  }
+
+  //check for matches
+  function checkForMatch() {
+    const cards = document.querySelectorAll('img')
+    const optionOneId = cardsChosenId[0]
+    const optionTwoId = cardsChosenId[1]
+    
+    if(optionOneId == optionTwoId) {
+      cards[optionOneId].setAttribute('src', 'images/escoger.jpg')
+      cards[optionTwoId].setAttribute('src', 'images/escoger.jpg')
+      alert('You have clicked the same image!')
+    }
+    else if (cardsChosen[0] === cardsChosen[1]) {
+      
+      cards[optionOneId].setAttribute('src', 'images/white.png')
+      cards[optionTwoId].setAttribute('src', 'images/white.png')
+      cards[optionOneId].removeEventListener('click', flipCard)
+      cards[optionTwoId].removeEventListener('click', flipCard)
+      cardsWon.push(cardsChosen)
+    } else {
+      cards[optionOneId].setAttribute('src', 'images/escoger.jpg')
+      cards[optionTwoId].setAttribute('src', 'images/escoger.jpg')
+      
+    }
+    cardsChosen = []
+    cardsChosenId = []
+    resultDisplay.textContent = cardsWon.length
+    if  (cardsWon.length === cardArray.length/2) {
+      resultDisplay.textContent = 'Felicitaciones ¡Encontraste todas las parejas!'
+    }
+  }
+
+  //flip your card
+  function flipCard() {
+    let cardId = this.getAttribute('data-id')
+    cardsChosen.push(cardArray[cardId].name)
+    cardsChosenId.push(cardId)
+    this.setAttribute('src', cardArray[cardId].img)
+    if (cardsChosen.length ===2) {
+      setTimeout(checkForMatch, 500)
+    }
+  }
+
+  createBoard()
+})  </script>
+   
+  <style>
+    .grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  height: 300px;
+  margin-left: 450px;
+ 
+     }
+
+    h3 {
+  margin-left: 450px;
+  margin-top: 100px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+     }
+
+     h2 {
+  margin-left: 420px;
+  margin-top: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+     }
+
+     body{
+         background-image: url('images/helechoq.jpg');
+     }
+
+  </style>
+
+</head>
+<body>
+
+  <h3>Puntaje:     <span id="result"></span></h3>
+  <h2>Encuentra las parejas de gatos tristes</h2>
+
+  <div class="grid">
+  </div>
+
+</body>
+</html>
